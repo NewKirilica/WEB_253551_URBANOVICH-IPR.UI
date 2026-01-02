@@ -1,0 +1,59 @@
+@page "{id:int}"
+@model WEB_253551_URBANOVICH.UI.Areas.Admin.Pages.Dishes.EditModel
+@{
+    ViewData["Title"] = "Редактировать";
+}
+
+<h2 class="mb-3">Редактировать блюдо</h2>
+
+<form method="post" enctype="multipart/form-data" class="row g-3">
+    <input type="hidden" asp-for="Dish.Id" />
+    <input type="hidden" asp-for="Dish.Image" />
+
+    <div class="col-md-6">
+        <label class="form-label">Название</label>
+        <input class="form-control" asp-for="Dish.Name" />
+        <span class="text-danger" asp-validation-for="Dish.Name"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Категория</label>
+        <select class="form-select" asp-for="Dish.CategoryId">
+            @foreach (var c in Model.Categories)
+            {
+                <option value="@c.Id" selected="@(c.Id == Model.Dish.CategoryId)">@c.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Описание</label>
+        <textarea class="form-control" asp-for="Dish.Description" rows="3"></textarea>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Цена</label>
+        <input class="form-control" asp-for="Dish.Price" />
+    </div>
+
+    <div class="col-md-8">
+        <label class="form-label">Новое изображение</label>
+        <div class="input-group">
+            <input class="form-control" asp-for="Image" type="file" />
+        </div>
+        <div class="form-text">Если выбрать файл — старое изображение будет удалено.</div>
+    </div>
+
+    <div class="col-12">
+        <img src="@Model.Dish.Image" alt="@Model.Dish.Name" style="max-width:320px; height:auto;" class="rounded border"/>
+    </div>
+
+    <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Назад</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

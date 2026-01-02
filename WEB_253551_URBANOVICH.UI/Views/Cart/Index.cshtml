@@ -1,0 +1,76 @@
+@model WEB_253551_URBANOVICH.UI.Models.Cart
+@{
+    ViewData["Title"] = "Корзина";
+    var returnUrl = ViewData["returnUrl"] as string;
+}
+
+<h2 class="mb-3">Корзина</h2>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">Корзина пуста.</div>
+    <a class="btn btn-primary" asp-controller="Product" asp-action="Index">В каталог</a>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Товар</th>
+                    <th class="text-end">Цена</th>
+                    <th class="text-center">Кол-во</th>
+                    <th class="text-end">Сумма</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var i in Model.Items)
+            {
+                <tr>
+                    <td style="width:72px;">
+                        <img src="@i.Image" alt="@i.Name" style="width:64px;height:48px;object-fit:cover;" class="rounded" />
+                    </td>
+                    <td>@i.Name</td>
+                    <td class="text-end">@i.Price.ToString("0.##")</td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a class="btn btn-outline-secondary"
+                               asp-action="RemoveOne"
+                               asp-route-id="@i.DishId"
+                               asp-route-returnUrl="@Url.Action("Index")">-</a>
+                            <span class="btn btn-outline-secondary disabled">@i.Quantity</span>
+                            <a class="btn btn-outline-secondary"
+                               asp-action="Add"
+                               asp-route-id="@i.DishId"
+                               asp-route-returnUrl="@Url.Action("Index")">+</a>
+                        </div>
+                    </td>
+                    <td class="text-end">@i.LineTotal.ToString("0.##")</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-danger"
+                           asp-action="RemoveItem"
+                           asp-route-id="@i.DishId"
+                           asp-route-returnUrl="@Url.Action("Index")">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-end fw-semibold">Итого:</td>
+                    <td class="text-end fw-semibold">@Model.TotalPrice.ToString("0.##")</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" asp-controller="Product" asp-action="Index">Продолжить покупки</a>
+        <a class="btn btn-outline-danger" asp-action="Clear" asp-route-returnUrl="@Url.Action("Index")">Очистить</a>
+    </div>
+}

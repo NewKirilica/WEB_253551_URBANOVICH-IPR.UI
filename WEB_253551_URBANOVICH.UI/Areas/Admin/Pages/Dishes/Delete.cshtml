@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model WEB_253551_URBANOVICH.UI.Areas.Admin.Pages.Dishes.DeleteModel
+@{
+    ViewData["Title"] = "Удалить";
+}
+
+<h2 class="mb-3 text-danger">Удалить блюдо</h2>
+
+<div class="alert alert-warning">
+    Точно удалить <strong>@Model.Dish.Name</strong>?
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <img src="@Model.Dish.Image" alt="@Model.Dish.Name" class="img-fluid rounded border"/>
+            </div>
+            <div class="col-md-8">
+                <p class="text-muted">@Model.Dish.Description</p>
+                <p><strong>Цена:</strong> @Model.Dish.Price.ToString("0.##") BYN</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" class="d-flex gap-2">
+    <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i> Удалить</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Отмена</a>
+</form>

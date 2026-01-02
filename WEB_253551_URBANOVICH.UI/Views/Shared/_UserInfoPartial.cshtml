@@ -1,0 +1,58 @@
+@using System.Security.Claims
+
+@if (User?.Identity?.IsAuthenticated != true)
+{
+    <div class="ms-4 d-flex gap-2">
+        <a class="btn btn-outline-light"
+           asp-controller="Account"
+           asp-action="Login">
+            Login
+        </a>
+
+        <a class="btn btn-warning"
+           asp-controller="Account"
+           asp-action="Register">
+            Register
+        </a>
+    </div>
+}
+else
+{
+    var name = User.Claims
+        .FirstOrDefault(c => c.Type.Equals("preferred_username", StringComparison.OrdinalIgnoreCase))
+        ?.Value ?? User.Identity?.Name ?? "User";
+
+    var avatar = User.Claims
+        .FirstOrDefault(c => c.Type.Equals("avatar", StringComparison.OrdinalIgnoreCase))
+        ?.Value ?? "/Images/default-profile-picture.png";
+
+    @await Component.InvokeAsync("Cart")
+
+    <div class="dropdown ms-4">
+        <button class="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown">
+            @name
+            <img src="@avatar" width="30" class="rounded" />
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li class="dropdown-item-text">
+                <img src="@avatar" width="50" class="rounded" />
+                @name
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+                <form method="post"
+                      asp-controller="Account"
+                      asp-action="Logout">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+
+            </li>
+        </ul>
+    </div>
+}

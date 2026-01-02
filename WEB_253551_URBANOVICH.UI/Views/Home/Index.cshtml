@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+    <main class="container mt-4">
+
+        <h2>Форма заказа</h2>
+
+        <form method="post">
+
+
+            <div class="mb-3">
+                <label class="form-label">Имя пользователя</label>
+                <input type="text"
+                       class="form-control"
+                       name="username" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Способ доставки</label><br />
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="delivery"
+                           value="courier" />
+                    <label class="form-check-label">
+                        Курьер
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="delivery"
+                           value="pickup" />
+                    <label class="form-check-label">
+                        Самовывоз
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Дополнительно</label>
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="gift"
+                           value="yes" />
+                    <label class="form-check-label">
+                        Подарочная упаковка
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Отправить
+            </button>
+
+        </form>
+
+    </main>
+

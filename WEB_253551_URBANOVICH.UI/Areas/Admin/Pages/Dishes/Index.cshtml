@@ -1,0 +1,89 @@
+@page "/Admin/Dishes"
+@model WEB_253551_URBANOVICH.UI.Areas.Admin.Pages.Dishes.IndexModel
+@{
+    ViewData["Title"] = "Администрирование";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Администрирование: Блюда</h2>
+    <a class="btn btn-primary" asp-page="Create">
+        <i class="fa-solid fa-plus"></i> Создать
+    </a>
+</div>
+
+<div class="mb-3">
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            @(Model.CurrentCategory ?? "Все категории")
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" asp-page="Index" asp-route-category="@null">Все</a></li>
+            @foreach (var c in Model.Categories)
+            {
+                <li><a class="dropdown-item" asp-page="Index" asp-route-category="@c.NormalizedName">@c.Name</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th style="width:90px;">Изображение</th>
+                <th>Название</th>
+                <th>Категория</th>
+                <th class="text-end">Цена</th>
+                <th style="width:170px;" class="text-end">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var d in Model.Data.Items)
+        {
+            <tr>
+                <td>
+                    <img src="@d.Image" alt="@d.Name" style="width:80px;height:60px;object-fit:cover;" class="rounded"/>
+                </td>
+                <td>@d.Name</td>
+                <td>@d.Category?.Name</td>
+                <td class="text-end">@d.Price.ToString("0.##")</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" asp-page="Details" asp-route-id="@d.Id" title="Просмотр">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    <a class="btn btn-sm btn-outline-primary" asp-page="Edit" asp-route-id="@d.Id" title="Редактировать">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                    <a class="btn btn-sm btn-outline-danger" asp-page="Delete" asp-route-id="@d.Id" title="Удалить">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.Data.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @{
+                var prev = Math.Max(1, Model.Data.CurrentPage - 1);
+                var next = Math.Min(Model.Data.TotalPages, Model.Data.CurrentPage + 1);
+            }
+            <li class="page-item @(Model.Data.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-page="Index" asp-route-category="@Model.CurrentCategory" asp-route-pageNo="@prev">«</a>
+            </li>
+            @for (int p = 1; p <= Model.Data.TotalPages; p++)
+            {
+                <li class="page-item @(p == Model.Data.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-page="Index" asp-route-category="@Model.CurrentCategory" asp-route-pageNo="@p">@p</a>
+                </li>
+            }
+            <li class="page-item @(Model.Data.CurrentPage == Model.Data.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-page="Index" asp-route-category="@Model.CurrentCategory" asp-route-pageNo="@next">»</a>
+            </li>
+        </ul>
+    </nav>
+}

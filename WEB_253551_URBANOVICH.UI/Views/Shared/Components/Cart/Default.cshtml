@@ -1,0 +1,9 @@
+@model WEB_253551_URBANOVICH.UI.Models.CartViewModel
+
+<a class="navbar-text ms-auto"
+   asp-controller="Cart"
+   asp-action="Index">
+    @Model.TotalPrice.ToString("0.00") BYN
+    <i class="fa-solid fa-cart-shopping"></i>
+    (@Model.ItemsCount)
+</a>
